@@ -34,7 +34,7 @@ async function syncQuotes() {
     quotes = serverQuotes; // Sync local data with server data
     saveQuotes(); // Save to local storage
     displayQuotes(quotes); // Update displayed quotes
-    alert('Data has been updated from the server.');
+    alert('Quotes synced with server!'); // Notify user of successful sync
   }
 }
 
