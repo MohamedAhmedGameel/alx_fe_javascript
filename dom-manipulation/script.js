@@ -14,38 +14,15 @@ function saveQuotes() {
   localStorage.setItem('quotes', JSON.stringify(quotes));
 }
 
-// Simulated server interaction
-const mockServer = {
-  data: [
-    { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Inspiration" },
-    { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", category: "Motivation" },
-    { text: "Life is really simple, but we insist on making it complicated.", category: "Life" }
-  ],
-  fetchData: function () {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(this.data);
-      }, 1000);
-    });
-  },
-  postData: function (newQuote) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this.data.push(newQuote);
-        resolve(newQuote);
-      }, 1000);
-    });
-  },
-  updateData: function (newQuotes) {
-    this.data = newQuotes;
-  }
-};
-
 // Function to fetch quotes from the server
 async function fetchQuotesFromServer() {
-  const serverQuotes = await mockServer.fetchData();
-  mockServer.updateData(serverQuotes); // Update server data
-  return serverQuotes; // Return the fetched quotes
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const serverQuotes = await response.json();
+  // Format server data to match the expected structure
+  return serverQuotes.map(quote => ({
+    text: quote.title, // Assuming title as the quote text
+    category: 'General' // Placeholder for category as this API does not provide categories
+  }));
 }
 
 // Function to sync with server
@@ -80,7 +57,7 @@ async function addQuote() {
     const newQuote = { text: newQuoteText, category: newQuoteCategory };
     quotes.push(newQuote);
     saveQuotes(); // Save to local storage
-    await mockServer.postData(newQuote); // Simulate posting to the server
+    // Here we can simulate a post request (not using JSONPlaceholder since it doesn't support POST for this use case)
     displayQuotes(quotes); // Update displayed quotes
     alert('Quote added successfully!');
     document.getElementById('newQuoteText').value = '';
