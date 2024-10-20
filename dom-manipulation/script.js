@@ -18,13 +18,13 @@ function saveQuotes() {
   localStorage.setItem('quotes', JSON.stringify(quotes));
 }
 
-// Function to display a quote
+// Function to display quotes
 function displayQuotes(filteredQuotes) {
   const quoteDisplay = document.getElementById('quoteDisplay');
-  quoteDisplay.innerHTML = ''; // Clear previous quotes
+  quoteDisplay.textContent = ''; // Clear previous quotes
   filteredQuotes.forEach(quote => {
     const quoteElement = document.createElement('p');
-    quoteElement.innerText = `"${quote.text}" - ${quote.category}`;
+    quoteElement.textContent = `"${quote.text}" - ${quote.category}`; // Use textContent for safe text setting
     quoteDisplay.appendChild(quoteElement);
   });
 }
@@ -73,7 +73,7 @@ function populateCategories() {
   categories.forEach(category => {
     const option = document.createElement('option');
     option.value = category;
-    option.innerText = category;
+    option.textContent = category; // Use textContent for safe text setting
     categoryFilter.appendChild(option);
   });
 }
