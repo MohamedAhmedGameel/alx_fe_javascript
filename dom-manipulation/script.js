@@ -16,7 +16,11 @@ function saveQuotes() {
 
 // Simulated server interaction
 const mockServer = {
-  data: [],
+  data: [
+    { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Inspiration" },
+    { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", category: "Motivation" },
+    { text: "Life is really simple, but we insist on making it complicated.", category: "Life" }
+  ],
   fetchData: function () {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -37,12 +41,18 @@ const mockServer = {
   }
 };
 
+// Function to fetch quotes from the server
+async function fetchQuotesFromServer() {
+  const serverQuotes = await mockServer.fetchData();
+  mockServer.updateData(serverQuotes); // Update server data
+  return serverQuotes; // Return the fetched quotes
+}
+
 // Function to sync with server
 async function syncWithServer() {
-  const serverQuotes = await mockServer.fetchData();
+  const serverQuotes = await fetchQuotesFromServer();
   if (JSON.stringify(serverQuotes) !== JSON.stringify(quotes)) {
     // Simple conflict resolution: Server data takes precedence
-    mockServer.updateData(quotes); // Update server data with local quotes
     quotes = serverQuotes; // Sync local data with server data
     saveQuotes(); // Save to local storage
     displayQuotes(quotes); // Update displayed quotes
