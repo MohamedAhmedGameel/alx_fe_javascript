@@ -35,7 +35,16 @@ function addQuote() {
 
   if (newQuoteText && newQuoteCategory) {
     // Adding the new quote to the quotes array
-    quotes.push({ text: newQuoteText, category: newQuoteCategory });
+    const newQuote = { text: newQuoteText, category: newQuoteCategory };
+    quotes.push(newQuote);
+
+    // Append the new quote to the quoteDisplay area
+    const quoteDisplay = document.getElementById('quoteDisplay');
+
+    const newQuoteElement = document.createElement('p');
+    newQuoteElement.innerHTML = `"${newQuote.text}" - <strong>${newQuote.category}</strong>`;
+    
+    quoteDisplay.appendChild(newQuoteElement);
 
     // Clear the form inputs
     document.getElementById('newQuoteText').value = '';
