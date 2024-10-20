@@ -25,9 +25,10 @@ async function fetchQuotesFromServer() {
   }));
 }
 
-// Function to sync with server
-async function syncWithServer() {
+// Function to sync local quotes with server quotes
+async function syncQuotes() {
   const serverQuotes = await fetchQuotesFromServer();
+  
   if (JSON.stringify(serverQuotes) !== JSON.stringify(quotes)) {
     // Simple conflict resolution: Server data takes precedence
     quotes = serverQuotes; // Sync local data with server data
@@ -94,8 +95,8 @@ async function postQuoteToServer(quote) {
 // Load quotes and sync with the server on page load
 window.onload = function() {
   loadQuotes();
-  syncWithServer(); // Sync data on load
+  syncQuotes(); // Sync data on load
 };
 
 // Periodically check for new data from the server every 5 seconds
-setInterval(syncWithServer, 5000);
+setInterval(syncQuotes, 5000);
