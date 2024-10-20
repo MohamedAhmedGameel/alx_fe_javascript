@@ -20,8 +20,8 @@ async function fetchQuotesFromServer() {
   const serverQuotes = await response.json();
   // Format server data to match the expected structure
   return serverQuotes.map(quote => ({
-    text: quote.title, // Assuming title as the quote text
-    category: 'General' // Placeholder for category as this API does not provide categories
+    text: quote.title, // Using title as the quote text
+    category: 'General' // Placeholder for category
   }));
 }
 
@@ -57,13 +57,37 @@ async function addQuote() {
     const newQuote = { text: newQuoteText, category: newQuoteCategory };
     quotes.push(newQuote);
     saveQuotes(); // Save to local storage
-    // Here we can simulate a post request (not using JSONPlaceholder since it doesn't support POST for this use case)
+    await postQuoteToServer(newQuote); // Send new quote to the server
     displayQuotes(quotes); // Update displayed quotes
     alert('Quote added successfully!');
     document.getElementById('newQuoteText').value = '';
     document.getElementById('newQuoteCategory').value = '';
   } else {
     alert('Please fill in both fields.');
+  }
+}
+
+// Function to send a new quote to the server
+async function postQuoteToServer(quote) {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Setting content type to JSON
+      },
+      body: JSON.stringify({
+        title: quote.text,
+        body: quote.category, // Using body for category as a placeholder
+        userId: 1, // Example userId, can be any number
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to post quote to the server');
+    }
+  } catch (error) {
+    console.error('Error posting quote:', error);
+    alert('Failed to add quote to the server.');
   }
 }
 
