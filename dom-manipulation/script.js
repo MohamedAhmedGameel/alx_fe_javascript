@@ -32,7 +32,7 @@ function addQuote() {
   } else {
     alert('Please enter both a quote and a category.');
   }
-}
+}   
 
 // Event listeners
 document.getElementById('newQuote').addEventListener('click', showRandomQuote);
